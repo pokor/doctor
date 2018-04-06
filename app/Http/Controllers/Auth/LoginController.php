@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Components\Request\Status;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -43,40 +44,35 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-         $paswd = $request->input('password');
-        //dd($paswd);
-        $user=User::where('mobile',$request->mobile)->orwhere('mobile',$request->mobile)->firstOrFail();//通过条件或来筛选
-        $user=User::where('mobile',$request->mobile)->firstOrFail();//通过条件或来筛选
-        //$credentials = $request->only('mobile','password');
-        if($user && Hash::check($paswd,$user->password)){
-        /*var_dump(bcrypt($user->password),bcrypt($paswd));
 
-        exit;*/
-         $token=JWTAuth::fromuser($user);    //获取token
+        //获取请求的参数
+        $mobile = $request->input('mobile');
+        $password = $request->input('password');
 
-        return response([
-            'token'=>$token,
-            'message'=>"Login Success",
-            'status_code'=>200
-        ]);
-        } else{
-            return response([
-                'token'=>'',
-                'message'=>"Login fail",
-                'status_code'=>500
-            ]);
+        //dd($request->all());
+
+        //通过手机号查询用户
+        $user = User::where('mobile',$mobile)->first();//通过条件或来筛选
+
+        if(is_null($user)){
+            //响应请求 - 手机号不通过
+            return $this->fail(Status::LOGIN_MOBILE_UNREGISTER);
         }
-       /* $credentials = $request->only('mobile','password');
-       // dd($credentials);
-        if (!$token = JWTAuth::attempt($credentials)){
-            return response([
-                'status' => 'error',
-                'error' => 'invalid.credentials',
-                'msg' => 'Invalid Credentials.'
-            ],400);
-        }
-        return response(['status'=>'success'])->headers('Authorization', $token);*/
 
+        // 判断密码是否正确
+        if (Hash::check($password, $user->password)) {
+            //生成请求 token
+            $token = JWTAuth::fromuser($user);
+            // 响应的数据
+            $data = [];
+            $data ['token'] = $token;
+            //响应请求
+            return $this->success($data);
+
+        } else {
+            //响应请求 - 密码验证不通过
+            return $this->fail(Status::LOGIN_FAIL);
+        }
     }
-    
+
 }

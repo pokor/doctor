@@ -11,10 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//登录注册
 Auth::routes();
+
+
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('picture','Media\PictureController@index');
 Route::any('upload','Media\PictureController@uploadImg')->name('picture');
@@ -22,3 +22,5 @@ Route::get('video','Media\VideoController@index');
 Route::any('videos','Media\VideoController@uploadVideo')->name('videos');
 Route::get('reset','Api\Auth\ResetController@index');
 Route::post('resets','Api\Auth\ResetController@reset')->name('reset');
+Route::post('demo','Auth\ResetController@reset');
+

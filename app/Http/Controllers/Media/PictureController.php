@@ -17,6 +17,10 @@ class PictureController extends Controller
         //dd(456655556585);
     }
     public function uploadImg(Request $request){
+        $user = $this->getUser();
+
+        $id = $user->id;
+
         if ($request->isMethod('post')){
             $file = $request->file('myPicture');
             if ($file){

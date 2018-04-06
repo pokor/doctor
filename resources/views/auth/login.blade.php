@@ -11,7 +11,7 @@
 <form action="{{route('login')}}" >
     <input type="text" name="username">
     <input type="password" name="password">
-    <button type="submit">登录</button>
+    <button type="submit">登录2</button>
 </form>
 </body>
 </html>
