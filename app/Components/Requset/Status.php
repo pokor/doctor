@@ -17,7 +17,7 @@ class Status
 
     // 登录相关
     const LOGIN_FAIL = 10000; //登录失败
-    const LOGIN_MOBILE_UNREGISTER = 10001; //手机号未注册
+    const LOGIN_MOBILE_UNREGISTERED = 10001; //手机号未注册
     const REGISTER_FAIL = 10002; //注册失败
     const MOBILE_HAS_REGISTERED = 10003; //注册失败
     const MOBILE_HAS_MUST = 10004; //缺少手机号参数
