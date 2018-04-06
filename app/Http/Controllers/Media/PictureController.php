@@ -45,15 +45,18 @@ class PictureController extends Controller
                $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
                if ($bool){
                    $path = 'uploads/img/'.$newImgName;
-                   //var_dump(1,$bool,$path);die();
                    $pic = new PictureModel();
                    //dd(time());
-                   $pic->pic_path = $realPath;//存储文件的路径
+                   $pic->pic_path = $path;//存储文件的路径
                    $pic->pic_suffix = $extension;//保存图片的后缀
                    $pic->created_at = time();//保存图片的存入时间戳
                    $pic ->user_id = $user_id;//获取用户ID
                    $pic->save();//存入数据库
-                   return json_encode($path);
+                   $data = [
+                       'error' =>0,
+                       'status' => $this->success(Status::REQUEST_SUCCESS)
+                   ];
+                   return response($this->success($data));
                }else{
                    return response(json_encode([
                        'token' => '',
