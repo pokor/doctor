@@ -42,6 +42,12 @@ class StatusText
             Status::MOBILE_HAS_MUST => '缺少手机号参数',
             Status::PASSWORD_HAS_MUST => '缺少密码参数',
 
+
+            //图片或视频上传相关
+            Status::PICTURE_FORMAT => '图片格式不正确',
+            Status::PICTURE_SIZE => '图片格式不正确',
+
+
         ];
     }
 

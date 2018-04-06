@@ -23,6 +23,13 @@ class Status
     const MOBILE_HAS_MUST = 10004; //缺少手机号参数
     const PASSWORD_HAS_MUST = 10005; //缺少密码参数
 
+    //图片或视频上传相关
+    const PICTURE_FORMAT = 11000;//图片格式不正确
+    const PICTURE_SIZE = 11001;//图片过大
+    const VIDEO_FORMAT = 11002;//视频格式不正确
+    const VIDEO_SIZE = 11003;//视频太大
+    //token异常状态报告
+    const TOKEN_ = 12000;
 
-    //
+
 }

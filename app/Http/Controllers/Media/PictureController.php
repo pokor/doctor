@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Media;
 
+use App\Models\PictureModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Components\Request\Status;
 
 
 
@@ -18,13 +20,19 @@ class PictureController extends Controller
     }
     public function uploadImg(Request $request){
         $user = $this->getUser();
+        //dd($user);
 
-        $id = $user->id;
+        $user_id = $user->id;
 
         if ($request->isMethod('post')){
             $file = $request->file('myPicture');
-            if ($file){
-                $extension = $file->extension();//获取上传图片的后缀名
+            $allowed_extensions = ["png", "jpg", "gif","jepg"];
+
+            $extension = $file->getClientOriginalExtension();//获取上传图片的后缀名
+            if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
+                return $this->fail(Status::PICTURE_FORMAT);
+            }
+
                 //dd($extension);
                 //$type = $file->getClientMimeType();//获取文件类型
                 //$originName = $file->getClientOriginalName();//获取文件原文件名
@@ -35,26 +43,29 @@ class PictureController extends Controller
                /* $file ->move(base_path().'/public/storage/uploads',$newImgName);
                 $idCardFront = '/upload/file/'.$newImgName;*/
                $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
-               $path = 'uploads/img/'.$newImgName;
-                dd(1,$bool,$path);
+               if ($bool){
+                   $path = 'uploads/img/'.$newImgName;
+                   //var_dump(1,$bool,$path);die();
+                   $pic = new PictureModel();
+                   //dd(time());
+                   $pic->pic_path = $realPath;//存储文件的路径
+                   $pic->pic_suffix = $extension;//保存图片的后缀
+                   $pic->created_at = time();//保存图片的存入时间戳
+                   $pic ->user_id = $user_id;//获取用户ID
+                   $pic->save();//存入数据库
+                   return json_encode($path);
+               }else{
+                   return response(json_encode([
+                       'token' => '',
+                       'code' => '501',
+                       'message' => '保存失败，请重新上传'
+                   ]));
+               }
 
-                //$url = Storage::url($newImgName);//获取图片的远程地址
-                //$size = Storage::size($newImgName)/1024;//获取图片资源的大小
-                //$created_at = time();
-                if ($bool){
-                    //dd($realPath);
-
-                }
-
-                return json_encode($path);
-            }
-            //dd($file);
 
         }else{
             $idCardFrontImg = '未上传图片';
             return json_encode($idCardFrontImg);
         }
-        //dd(222);
-
     }
 }

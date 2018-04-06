@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PictureModel extends Model
+class VideoModel extends Model
 {
     //
-    protected $table = 'user_pic';
+    protected $table = 'user_video';
     protected $key = 'id';
     
 }

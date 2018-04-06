@@ -13,11 +13,14 @@
 
 //登录注册
 Auth::routes();
-
+Route::get('/',function (){
+    return view('welcome');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('picture','Media\PictureController@index');
 Route::any('upload','Media\PictureController@uploadImg')->name('picture');
+Route::post('get_pic','Media\PictureController@get_Img')->name('get_img');
 Route::get('video','Media\VideoController@index');
 Route::any('videos','Media\VideoController@uploadVideo')->name('videos');
 Route::get('reset','Api\Auth\ResetController@index');

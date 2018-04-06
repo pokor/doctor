@@ -11,7 +11,7 @@
 <form method="post" enctype="multipart/form-data" action="{{route('videos')}}">
     {{csrf_field()}}
     <ul class="list_btn">
-       <input type="file" name="myPicture" multiple="multiple" >
+       <input type="file" name="myVideo" multiple="multiple" >
     </ul>
     <button type="submit">上传</button>
 </form>
