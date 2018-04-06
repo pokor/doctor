@@ -22,6 +22,7 @@ class ResetController extends Controller
             'oldpassword'=>'required|between:6,20',
             'password'=>'required|between:6,20|confirmed',
         ];
+        
         $message = [
             'required' => '密码不能为空',
             'between' => '密码必须是6~20位之间',
