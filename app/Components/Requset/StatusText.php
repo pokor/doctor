@@ -36,18 +36,22 @@ class StatusText
 
             // 登录相关
             Status::LOGIN_FAIL => '登录失败',
-            Status::LOGIN_MOBILE_UNREGISTER => '手机号未注册',
+            Status::LOGIN_MOBILE_UNREGISTERED => '手机号未注册',
             Status::REGISTER_FAIL => '注册失败',
             Status::MOBILE_HAS_REGISTERED => '手机号已注册',
             Status::MOBILE_HAS_MUST => '缺少手机号参数',
             Status::PASSWORD_HAS_MUST => '缺少密码参数',
 
+            //token
+            Status::TOKEN_EXPIRED => 'token过期',
+            Status::TOKEN_INVALID => 'token无效',
+            Status::TOKEN_MISMATCH => 'token缺少',
+            Status::TOKEN_PARSE_FAIL => 'token解析失败',
+
 
             //图片或视频上传相关
             Status::PICTURE_FORMAT => '图片格式不正确',
             Status::PICTURE_SIZE => '图片格式不正确',
-
-
         ];
     }
 
