@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Components\Request\Status;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -66,30 +67,51 @@ class RegisterController extends Controller
     {
         //dd($data);
         return User::create([
-            'username' => $data['username'],
+            'username' => isset($data['username'])?$data['username']:'',
             'mobile' => $data['mobile'],
             'password' => bcrypt($data['password']),
         ]);
 
     }
 
+    /**
+     * 注册
+     * @param Request $request
+     * @return string
+     */
     public function register(Request $request)
     {
-        //dd($request->all());
+        //获取手机号
+        $mobile = $request->input('mobile');
+
+        //验证手机号参数
+        if (!$request->has('mobile')){
+            return $this->fail(Status::MOBILE_HAS_MUST);
+        }
+        //验证密码参数
+        if (!$request->has('password')){
+            return $this->fail(Status::PASSWORD_HAS_MUST);
+        }
+
+        //判断手机号是否注册
+        $user = User::where('mobile',$mobile)->first();//通过条件或来筛选
+        if (!is_null($user)){
+            //响应请求 - 手机号已注册
+            return $this->fail(Status::MOBILE_HAS_REGISTERED);
+        }
 
         $user = $this->create($request->all());
-
         if($user){
-            $token=JWTAuth::fromuser($user);  //获取token
-            return response([
-                "token" => $token,
-                "message" => "注册成功",
-                "status_code" => 201
-            ]);
+            // 生成token
+            $token=JWTAuth::fromuser($user);
+            // 响应的数据
+            $data = [];
+            $data ['token'] = $token;
+            return $this->success($data);
         }
         else{
-            $this->sendFailResponse("注册失败");
+            //响应失败请求
+            return $this->fail(Status::REGISTER_FAIL);
         }
-
     }
 }

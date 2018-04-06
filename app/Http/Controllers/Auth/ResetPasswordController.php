@@ -36,4 +36,12 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function reset(Request $request)
+    {
+        $this->getUser($request);
+
+       dd($request->all());
+    }
+
 }
