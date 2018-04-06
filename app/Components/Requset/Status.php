@@ -28,8 +28,7 @@ class Status
     const PICTURE_SIZE = 11001;//图片过大
     const VIDEO_FORMAT = 11002;//视频格式不正确
     const VIDEO_SIZE = 11003;//视频太大
-    //token异常状态报告
-    const TOKEN_ = 12000;
+
 
 
 }

@@ -17,7 +17,9 @@ class VideoController extends Controller
     public function uploadVideo(Request $request){
 
         if ($request->isMethod('post')){
+            $user_id = $this->getUser()->id;
             $file = $request->file('myVideo');
+
             $allowed_extensions = ["mp4", "avi", "rmvb","mkv","mov","flv","3gp","m4v","mpeg"];
             $extension = $file->getClientOriginalExtension();//获取上传图片的后缀名
             if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
@@ -41,9 +43,10 @@ class VideoController extends Controller
                    $video->video_path = $realPath;//存储文件的路径
                    $video->video_suffix = $extension;//保存图片的后缀
                    $video->created_at = time();//保存图片的存入时间戳
-                   $video ->user_id = '';
+                   $video ->user_id = $user_id;
                    $video->save();
-                   return json_encode($path);
+                   //$url = env('APP_URL');
+                   return ;
                }
             }
             //dd($file);
