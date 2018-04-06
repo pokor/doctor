@@ -52,6 +52,8 @@ class StatusText
             //图片或视频上传相关
             Status::PICTURE_FORMAT => '图片格式不正确',
             Status::PICTURE_SIZE => '图片格式不正确',
+            Status::VIDEO_FORMAT => '视频格式不正确',
+            Status::VIDEO_SIZE => '视频太大',
         ];
     }
 
