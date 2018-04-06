@@ -11,6 +11,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class ResetController extends Controller
 {
@@ -19,9 +20,6 @@ class ResetController extends Controller
     public function reset(Request $request)
     {
         $user = $this->getUser();
-        var_dump(1);
-        $this->getUser();
 
-        dd($request->all());
     }
 }

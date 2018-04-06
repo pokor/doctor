@@ -22,26 +22,44 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
+    /**
+     * 解析并验证token 从而获得用户信息
+     * @return mixed
+     */
     protected function getUser()
     {
         try {
-            $token = JWTAuth::parseToken();
+            $user = JWTAuth::parseToken()->authenticate();
+            return $user;
         } catch (TokenExpiredException $e) {
-            var_dump($e->getMessage());
-            return $this->fail('');
+            echo json_encode([
+                'code' => Status::TOKEN_EXPIRED,
+                'message' => StatusText::statusToText(Status::TOKEN_EXPIRED),
+                'data' => []
+            ]);
+            die;
         } catch (TokenInvalidException $e) {
-            var_dump($e->getMessage());
-            return $this->fail('');
+            echo json_encode([
+                'code' => Status::TOKEN_INVALID,
+                'message' => StatusText::statusToText(Status::TOKEN_INVALID),
+                'data' => []
+            ]);
+            die;
         } catch (TokenMismatchException $e) {
-            var_dump($e->getMessage());
-            return $this->fail('');
+            echo json_encode([
+                'code' => Status::TOKEN_MISMATCH,
+                'message' => StatusText::statusToText(Status::TOKEN_MISMATCH),
+                'data' => []
+            ]);
+            die;
         } catch (JWTException $e) {
-
-            var_dump($e);
+            echo json_encode([
+                'code' => Status::TOKEN_PARSE_FAIL,
+                'message' => StatusText::statusToText(Status::TOKEN_PARSE_FAIL),
+                'data' => []
+            ]);
             die;
         }
-        return $token->authenticate();
-
     }
 
     /**
@@ -69,7 +87,7 @@ class Controller extends BaseController
         return response([
             'code' => $code,
             'message' => StatusText::statusToText($code),
-            'date' => $data
+            'data' => $data
         ]);
     }
 

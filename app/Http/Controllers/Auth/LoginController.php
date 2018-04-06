@@ -56,7 +56,7 @@ class LoginController extends Controller
 
         if(is_null($user)){
             //响应请求 - 手机号不通过
-            return $this->fail(Status::LOGIN_MOBILE_UNREGISTER);
+            return $this->fail(Status::LOGIN_MOBILE_UNREGISTERED);
         }
 
         // 判断密码是否正确

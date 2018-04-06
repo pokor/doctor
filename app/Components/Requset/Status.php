@@ -24,5 +24,9 @@ class Status
     const PASSWORD_HAS_MUST = 10005; //缺少密码参数
 
 
-    //
+    // token解析
+    const TOKEN_EXPIRED = 10011; //token过期
+    const TOKEN_INVALID = 10012; //token无效
+    const TOKEN_MISMATCH = 10013; //token缺少
+    const TOKEN_PARSE_FAIL = 10014; //token解析失败
 }
