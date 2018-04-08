@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Media;
 use App\Models\VideoModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Components\Request\Status;
 class VideoController extends Controller
@@ -49,7 +50,29 @@ class VideoController extends Controller
 
         }else{
             $idCardFrontImg = '未上传图片';
-            return json_encode($idCardFrontImg);
+            return response($this->fail(Status::REQUEST_FAIL));
         }
+    }
+    public function videoList(){
+        $user = $this->getUser();//获取到用户的token
+
+        $user_id = $user->id;//解析用户token获取到用户的id
+
+        $pic = DB::table('user_video')->where('user_id',$user_id)->orderby('id','desc')->get();
+
+        $data = [];
+
+        foreach ($pic as $item){
+
+            $videoData = [];
+            $videoData['id'] = $item->id;
+            $videoData['name'] = $item->video_name;
+            $videoData['url'] = env('APP_URL') .'/'. $item->video_path;
+            $videoData['user_id'] = env('APP_URL') . $item->user_id;
+            $videoData['suffix'] = $item->video_suffix;
+            $data[] =$videoData;
+        }
+
+        return $this->success($data);
     }
 }

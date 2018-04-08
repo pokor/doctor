@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Media;
 use App\Models\PictureModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Components\Request\Status;
 
@@ -70,5 +71,31 @@ class PictureController extends Controller
             $idCardFrontImg = '未上传图片';
             return json_encode($idCardFrontImg);
         }
+    }
+    public function pictureList(){
+        $user = $this->getUser();//获取到用户的token
+
+        $user_id = $user->id;//解析用户token获取到用户的id
+
+        $pic = DB::table('user_picture')->where('user_id',$user_id)->orderby('id','asc')->get();
+
+        $data=[];
+        foreach ($pic as $item){
+            $pictureData['id'] = [];
+            $pictureData['name'] = $item->id;
+            $pictureData['url'] = env('APP_URL').'/'.$item->video_path;
+            $pictureData['user_id'] =$item->video_suffix;
+            $pictureData['suffix'] =$item->video_suffix;
+        }
+        //查询结果不知道怎么处理
+
+        return $this->success($data);
+
+    }
+
+    public function pictureDelete(Request $request){
+            $user = $this->getUser();
+            $user_id = $user->id;
+
     }
 }

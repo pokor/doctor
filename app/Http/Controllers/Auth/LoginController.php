@@ -63,9 +63,14 @@ class LoginController extends Controller
         if (Hash::check($password, $user->password)) {
             //生成请求 token
             $token = JWTAuth::fromuser($user);
+            $nickname = $this->getUser()->nickname;
+            $user_id = $this->getUser()->id;
             // 响应的数据
             $data = [];
             $data ['token'] = $token;
+            $data ['mobile'] = $mobile;
+            $data ['nickname'] = isset($nickname)?$nickname:'';
+            $data ['user_id'] = $user_id;
             //响应请求
             return $this->success($data);
 
