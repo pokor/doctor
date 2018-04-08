@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Hash;
 
@@ -46,14 +47,14 @@ class LoginController extends Controller
     {
 
         //获取请求的参数
-        $mobile = $request->input('mobile');
-        $password = $request->input('password');
+        $mobile = $request->input('mobile');//获取APP端请求的手机号
+        $password = $request->input('password');//获取用户的密码
 
         //dd($request->all());
 
         //通过手机号查询用户
         $user = User::where('mobile',$mobile)->first();//通过条件或来筛选
-
+        //dd($user);
         if(is_null($user)){
             //响应请求 - 手机号不通过
             return $this->fail(Status::LOGIN_MOBILE_UNREGISTERED);
@@ -63,14 +64,31 @@ class LoginController extends Controller
         if (Hash::check($password, $user->password)) {
             //生成请求 token
             $token = JWTAuth::fromuser($user);
-            $nickname = $this->getUser()->nickname;
-            $user_id = $this->getUser()->id;
+            $user_status = $user->user_status;
+            $signa = $user->nickname;
+            $created_at = $user->created_at;
+            $nickname = $user->nickname;
+            $user_id = $user->id;
+
+            $user_avatar = DB::table('user_avatar')->where('user_id',$user_id)->first();
+            //dd($user_avatar);
+            $avatar_path =$user_avatar->avatar_path;
+            $avatar_suffix = $user_avatar->avatar_suffix;
+            $avatar_name =$user_avatar->avatar_name;
+            $uaer_avatar_img = env('APP_URL').'/'.$avatar_path.'/'.$avatar_name.'.'.$avatar_suffix;
+
+            //$user_id = $user->id;
             // 响应的数据
             $data = [];
-            $data ['token'] = $token;
-            $data ['mobile'] = $mobile;
-            $data ['nickname'] = isset($nickname)?$nickname:'';
-            $data ['user_id'] = $user_id;
+            $data ['token'] = $token;//返回用户的toke
+            $data ['mobile'] = $mobile;//返回用户的手机
+            $data ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称
+            $data ['signa'] = isset($signa)?$signa:'';//返回用户的签名
+            $data ['created_at'] = isset($created_at)?$created_at:'';//返回用户的注册时间
+            $data ['user_status'] = isset($user_status)?$user_status:'';//返回用户的注册时间
+            $data ['avatar_img'] = $uaer_avatar_img;//返回用户的昵称
+            $data ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称*/
+            /*$data ['user_id'] = $user_id;//*/
             //响应请求
             return $this->success($data);
 

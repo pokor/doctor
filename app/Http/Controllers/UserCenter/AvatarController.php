@@ -40,9 +40,12 @@ class AvatarController extends Controller
                 $pic->created_at = time();//保存图片的存入时间戳
                 $pic ->user_id = $user_id;//获取用户ID
                 $pic->save();//存入数据库
+                $avatar = env('APP_URL').'/'.$path.$extension;
                 $data = [
                     'error' =>0,
-                    'status' => $this->success(Status::REQUEST_SUCCESS)
+                    'status' => $this->success(Status::REQUEST_SUCCESS),
+                    'avatar' => $avatar
+
                 ];
                 return response($this->success($data));
             }else{
