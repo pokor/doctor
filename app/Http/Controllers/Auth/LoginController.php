@@ -71,24 +71,22 @@ class LoginController extends Controller
             $user_id = $user->id;
 
             $user_avatar = DB::table('user_avatar')->where('user_id',$user_id)->first();
-            //dd($user_avatar);
+            $avatar_name =$user_avatar->avatar_name;
             $avatar_path =$user_avatar->avatar_path;
             $avatar_suffix = $user_avatar->avatar_suffix;
-            $avatar_name =$user_avatar->avatar_name;
             $uaer_avatar_img = env('APP_URL').'/'.$avatar_path.'/'.$avatar_name.'.'.$avatar_suffix;
-
-            //$user_id = $user->id;
             // 响应的数据
-            $data = [];
+            $info = [];//声明用户信息
+            $data = [];//
             $data ['token'] = $token;//返回用户的toke
-            $data ['mobile'] = $mobile;//返回用户的手机
-            $data ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称
-            $data ['signa'] = isset($signa)?$signa:'';//返回用户的签名
-            $data ['created_at'] = isset($created_at)?$created_at:'';//返回用户的注册时间
-            $data ['user_status'] = isset($user_status)?$user_status:'';//返回用户的注册时间
-            $data ['avatar_img'] = $uaer_avatar_img;//返回用户的昵称
-            $data ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称*/
-            /*$data ['user_id'] = $user_id;//*/
+            $info ['user_id'] = $user_id;
+            $info ['mobile'] = $mobile;//返回用户的手机
+            $info ['signa'] = isset($signa)?$signa:'';//返回用户的签名
+            $info ['user_status'] = isset($user_status)?$user_status:'';//返回用户的注册时间
+            $info ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称*/
+            $info ['avatar_img'] = $uaer_avatar_img;//返回用户的昵称
+            $info ['created_at'] =date('Y-m-d H:i:s',strtotime($created_at)  );//返回用户的注册时间
+            $data['info'] = $info;
             //响应请求
             return $this->success($data);
 
