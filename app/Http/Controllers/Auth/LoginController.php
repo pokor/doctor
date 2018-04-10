@@ -49,9 +49,7 @@ class LoginController extends Controller
         //获取请求的参数
         $mobile = $request->input('mobile');//获取APP端请求的手机号
         $password = $request->input('password');//获取用户的密码
-
-        //dd($request->all());
-
+        
         //通过手机号查询用户
         $user = User::where('mobile',$mobile)->first();//通过条件或来筛选
         //dd($user);
@@ -65,23 +63,25 @@ class LoginController extends Controller
             //生成请求 token
             $token = JWTAuth::fromuser($user);
             $user_status = $user->user_status;
-            $signa = $user->nickname;
+            $signature = $user->signature;
             $created_at = $user->created_at;
             $nickname = $user->nickname;
             $user_id = $user->id;
 
             $user_avatar = DB::table('user_avatar')->where('user_id',$user_id)->first();
-            $avatar_name =$user_avatar->avatar_name;
+            if (is_null($user_avatar)){
+
+            }
+            //dd($user_id);
             $avatar_path =$user_avatar->avatar_path;
-            $avatar_suffix = $user_avatar->avatar_suffix;
-            $uaer_avatar_img = env('APP_URL').'/'.$avatar_path.'/'.$avatar_name.'.'.$avatar_suffix;
+            $uaer_avatar_img =$this->fullPath($avatar_path);
             // 响应的数据
             $info = [];//声明用户信息
             $data = [];//
             $data ['token'] = $token;//返回用户的toke
             $info ['user_id'] = $user_id;
             $info ['mobile'] = $mobile;//返回用户的手机
-            $info ['signa'] = isset($signa)?$signa:'';//返回用户的签名
+            $info ['signature'] = isset($signature)?$signature:'';//返回用户的签名
             $info ['user_status'] = isset($user_status)?$user_status:'';//返回用户的注册时间
             $info ['nickname'] = isset($nickname)?$nickname:'';//返回用户的昵称*/
             $info ['avatar_img'] = $uaer_avatar_img;//返回用户的昵称

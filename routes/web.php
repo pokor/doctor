@@ -17,22 +17,39 @@ Route::get('/',function (){
     return view('welcome');
 });
 
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('picture','Media\PictureController@index');
-Route::any('upload','Media\PictureController@uploadImg')->name('picture');//
-Route::get('video','Media\VideoController@index');
-Route::any('video','Media\VideoController@uploadVideo')->name('videos');//
-Route::any('video_list','Media\VideoController@videoList')->name('videos');//
+Route::get('/home', 'HomeController@index');
+Route::any('video','Media\VideoController@uploadVideo');//
+Route::any('video_list','Media\VideoController@videoList');//
 Route::any('video_delete','Media\VideoController@videoDelete');//
-Route::post('get_pic','Media\PictureController@get_Img')->name('get_img');//
-Route::post('pic_list','Media\VideoController@pictureList');//
-Route::get('pic_delete','Media\VideoController@pictureDelete');
-Route::get('reset','Api\Auth\ResetController@index');
-Route::post('resets','Api\Auth\ResetController@reset')->name('reset');//
-/*Route::post('demo','Auth\ResetController@reset');//*/
-Route::post('feed','UserCenter\FeedController@index');//
-Route::any('avatar','UserCenter\AvatarController@index');//
-Route::post('nickname','UserCenter\NickNameController@index');//
-Route::post('gender','UserCenter\GenderController@index');//
-Route::post('signe','UserCenter\SigneController@index');//
+Route::post('picture','Media\PictureController@uploadImg');//
+Route::post('picturelist','Media\PictureController@pictureList');//
+Route::post('picture_delete','Media\PictureController@pictureDelete');
+
+
+Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
+
+        Route::group(['prefix'=>'user'],function (){
+            Route::post('resets','Api\Auth\ResetController@reset');//
+            Route::post('feed','UserCenter\FeedController@index');//
+            Route::any('avatar','UserCenter\AvatarController@index');//
+            Route::post('nickname','UserCenter\NickNameController@index');//
+            Route::post('gender','UserCenter\GenderController@index');//
+            Route::post('signature','UserCenter\SigneController@index');//
+        });
+        Route::group(['prefix'=>'western'],function (){
+            Route::post('/','Home\HomeWesternController@index');
+        });
+        Route::group(['prefix'=>'traditional'],function (){
+            Route::post('/','Home\HomeTraditionalController@index');
+        });
+        Route::group(['prefix'=>'diet'],function (){
+            Route::post('/','Home\HomeDietController@index');
+        });
+        Route::group(['prefix'=>'beauty'],function (){
+            Route::post('/','Home\HomeBeautyController@index');
+        });
+
+});
+
+
 

@@ -91,5 +91,17 @@ class Controller extends BaseController
         ]);
     }
 
+    /**
+     * 返回文件完整的带域名地址
+     * @param $path 文件相对路径
+     * @return string
+     */
+    protected function fullPath($path){
+       if (!$path || is_null($path)){
+           return $path;
+       }
+       return env('APP_URL').'/'.$path;
+    }
+
 
 }
