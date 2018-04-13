@@ -25,21 +25,22 @@ class PictureController extends Controller
         //dd($user);
 
         //$user_id = $user->id;
-        //var_dump($request->file('myPicture'));
 
         //return response($request->all());
         if ($request->isMethod('post')){
-            $file = $request->file('myPicture');
+            $base64 = preg_replace("/\s/",'+',$request->input('myPicture'));
+            $img = base64_decode($base64);
+            //$file = $request->file('myPicture');
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
 
-            $extension = $file->getClientOriginalExtension();//获取上传图片的后缀名
+            $extension = $img->getClientOriginalExtension();//获取上传图片的后缀名
             if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
                 return $this->fail(Status::PICTURE_FORMAT);
             }
 
                 $newImgName = date('Y-m-d-h-is').'-'.uniqid().'.'.$extension;//拼接新的文件名
 
-                $realPath = $file->getRealPath();
+                $realPath = $img->getRealPath();
                $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
                if ($bool){
                    $path = 'uploads/img/'.$newImgName;
