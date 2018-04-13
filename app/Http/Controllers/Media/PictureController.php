@@ -27,7 +27,7 @@ class PictureController extends Controller
         //$user_id = $user->id;
         //var_dump($request->file('myPicture'));
 
-        return response($request->all());
+        //return response($request->all());
         if ($request->isMethod('post')){
             $file = $request->file('myPicture');
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
