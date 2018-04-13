@@ -49,7 +49,7 @@ class LoginController extends Controller
         //获取请求的参数
         $mobile = $request->input('mobile');//获取APP端请求的手机号
         $password = $request->input('password');//获取用户的密码
-        
+
         //通过手机号查询用户
         $user = User::where('mobile',$mobile)->first();//通过条件或来筛选
         //dd($user);

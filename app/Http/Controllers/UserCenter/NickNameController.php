@@ -11,14 +11,14 @@ class NickNameController extends Controller
 
     public function index(Request $request){
         $user_id = $this->getUser()->id;
-        $nickname = $request->input('NickName');
+        $nickname = $request->input('nickName');
         $user = new UserModel();
 
         $user ->id = $user_id;
         $user->nickname = $nickname;
         $user->save();
         $data = [];
-        $data ['nickname'] = $nickname;
+        $data ['nickName'] = $nickname;
         //响应请求
         return $this->success($data);
     }

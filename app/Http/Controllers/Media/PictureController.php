@@ -11,6 +11,7 @@ use App\Components\Request\Status;
 
 
 
+
 class PictureController extends Controller
 {
     //
@@ -24,11 +25,12 @@ class PictureController extends Controller
         //dd($user);
 
         //$user_id = $user->id;
+        //var_dump($request->file('myPicture'));
 
-        //dd($request->file('myPicture'));
+        return response($request->all());
         if ($request->isMethod('post')){
             $file = $request->file('myPicture');
-            $allowed_extensions = ["png", "jpg", "gif","jepg"];
+            $allowed_extensions = ["png", "jpg", "gif","jpeg"];
 
             $extension = $file->getClientOriginalExtension();//获取上传图片的后缀名
             if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
@@ -85,11 +87,18 @@ class PictureController extends Controller
             $user_id = $user->id;*/
         $pic_id = $request->input('id');
 
+        $res = json_decode($pic_id,true);
+
+        //var_dump($res);
+
+        //dd('');
+
+
         $date[] = '';
-        foreach (array($pic_id) as $item){
+        foreach ($res as $item){
             $pictureID = [];
             $pictureID['id'] = $item;
-            dd($pictureID);
+            echo($item);
         };
 
         $pic_deleted = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id',$pic_id)->delete();

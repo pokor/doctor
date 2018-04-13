@@ -11,14 +11,14 @@ class SigneController extends Controller
     //
     public function index(Request $request){
         $user_id = $this->getUser()->id;
-        $signe = $request->input('signe');
+        $signature = $request->input('signature');
         $user = new UserModel();
 
         $user ->id = $user_id;
-        $user->signe = $signe;
+        $user->signe = $signature;
         $user->save();
         $data = [];
-        $data ['signe'] = $signe;
+        $data ['signature'] = $signature;
         //响应请求
         return $this->success($data);
     }

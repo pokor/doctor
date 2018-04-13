@@ -36,16 +36,16 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
             Route::post('gender','UserCenter\GenderController@index');//
             Route::post('signature','UserCenter\SigneController@index');//
         });
-        Route::group(['prefix'=>'western'],function (){
+        Route::group(['prefix'=>'western'],function (){//
             Route::post('/','Home\HomeWesternController@index');
         });
-        Route::group(['prefix'=>'traditional'],function (){
+        Route::group(['prefix'=>'traditional'],function (){//
             Route::post('/','Home\HomeTraditionalController@index');
         });
-        Route::group(['prefix'=>'diet'],function (){
+        Route::group(['prefix'=>'diet'],function (){//
             Route::post('/','Home\HomeDietController@index');
         });
-        Route::group(['prefix'=>'beauty'],function (){
+        Route::group(['prefix'=>'beauty'],function (){//
             Route::post('/','Home\HomeBeautyController@index');
         });
 

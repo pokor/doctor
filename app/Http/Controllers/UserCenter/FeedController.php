@@ -21,7 +21,6 @@ class FeedController extends Controller
             $feedBack->create_at = time();//获取当前时间戳
             $feedBack->save();
 
-
             return $this->success(Status::REQUEST_SUCCESS);//意见反馈成功
         }else{
             return $this->fail(Status::REQUEST_FAIL);//意见反馈失败
