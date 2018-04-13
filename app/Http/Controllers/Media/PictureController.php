@@ -49,6 +49,7 @@ class PictureController extends Controller
                    $pic->created_at = time();//保存图片的存入时间戳
                    $pic->save();//存入数据库
                    $info = [];
+                   $info['url'] = env('APP_URL').'/'.$path;
                    $data =[];
                    $data['info'] = $info;
                    return $this->success($data);
