@@ -26,14 +26,19 @@ class PictureController extends Controller
 
         //$user_id = $user->id;
 
-        //return response($request->all());
+        //return response();
+        //dd($request->all());
         if ($request->isMethod('post')){
-            $base64 = preg_replace("/\s/",'+',$request->input('myPicture'));
+            $base64 = $request->input('myPicture');
             $img = base64_decode($base64);
+            //dd($base64);
+
             //$file = $request->file('myPicture');
+
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
 
             $extension = $img->getClientOriginalExtension();//获取上传图片的后缀名
+            //return '111555555555';
             if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
                 return $this->fail(Status::PICTURE_FORMAT);
             }
