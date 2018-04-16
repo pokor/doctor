@@ -28,10 +28,30 @@ class PictureController extends Controller
 
         //return response();
         //dd($request->all());
-        if ($request->isMethod('post')){
-            $base64 = $request->input('myPicture');
+        $base64 = $request->input('myPicture');
+        //var_dump($base64);
+        $img = base64_decode($base64);
+        $newImgName = date('Y-m-d-h-is').'-'.uniqid().'.'.'jpeg';//拼接新的文件名
+
+        $realPath = $img->getRealPath();
+         Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
+       /* if ($bool) {
+            $path = 'uploads/img/' . $newImgName;
+            $pic = new PictureModel();
+            //dd(time());
+            $pic->pic_path = $path;//存储文件的路径
+            $pic->created_at = time();//保存图片的存入时间戳
+            $pic->save();//存入数据库
+            $info = [];
+            $info['url'] = env('APP_URL') . '/' . $path;
+            $data = [];
+            $data['info'] = $info;
+            return $this->success($data);
+        }*/
+        /*if ($request->isMethod('post')){
+            $base64 = preg_replace("/\s/",'+',$request->input('myPicture'));
             $img = base64_decode($base64);
-            //dd($base64);
+            dd($base64);
 
             //$file = $request->file('myPicture');
 
@@ -65,7 +85,7 @@ class PictureController extends Controller
 
         }else{
             return $this->fail(Status::REQUEST_FAIL);
-        }
+        }*/
     }
     public function pictureList(Request $request){
         //dd($request->all());
