@@ -22,6 +22,7 @@ Route::any('video','Media\VideoController@uploadVideo');//
 Route::any('video_list','Media\VideoController@videoList');//
 Route::any('video_delete','Media\VideoController@videoDelete');//
 Route::post('picture','Media\PictureController@uploadImg');//
+Route::post('picture2','Media\PictureController@base64_decode');//
 Route::post('picturelist','Media\PictureController@pictureList');//
 Route::post('picture_delete','Media\PictureController@pictureDelete');
 

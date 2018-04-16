@@ -51,9 +51,15 @@ class StatusText
 
             //图片或视频上传相关
             Status::PICTURE_FORMAT => '图片格式不正确',
+            Status::PICTURE_FAIL => '图片上传失败',
+            Status::PICTURE_SUCCESS => '图片上传成功',
+            Status::PICTURE_FAIL => '图片上传失败',
             Status::PICTURE_SIZE => '图片格式不正确',
             Status::VIDEO_FORMAT => '视频格式不正确',
             Status::VIDEO_SIZE => '视频太大',
+            Status::VIDEO_FAIL => '视频上传失败',
+            Status::VIDEO_SUCCESS => '视频上传成功',
+            Status::VIDEO_FAIL => '视频上传失败',
         ];
     }
 

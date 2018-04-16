@@ -31,8 +31,12 @@ class Status
     //
     ///
     ///  //图片或视频上传相关
-    const PICTURE_FORMAT = 11000;//图片格式不正确
-    const PICTURE_SIZE = 11001;//图片过大
-    const VIDEO_FORMAT = 11002;//视频格式不正确
-    const VIDEO_SIZE = 11003;//视频太大
+    const PICTURE_FAIL = 11000;//图片上传失败
+    const PICTURE_FORMAT = 11001;//图片格式不正确
+    const PICTURE_SUCCESS = 11002;//图片上传成功
+    const PICTURE_SIZE = 11003;//图片过大
+    const VIDEO_SUCCESS = 11010;//视频上传成功
+    const VIDEO_FORMAT = 11011;//视频格式不正确
+    const VIDEO_SIZE = 11012;//视频太大
+    const VIDEO_FAIL = 11013;//视频上传成功
 }

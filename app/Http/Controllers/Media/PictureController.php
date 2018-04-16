@@ -108,4 +108,17 @@ class PictureController extends Controller
         $pic_deleted = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id',$pic_id)->delete();
 
     }
+    public function base64_decode(Request $request){
+
+        $base64 = $request->input('myPicture');
+        $img = $this->base64_decode($base64);
+        $newImgName = date('Y-m-d-h-is').'-'.uniqid().'.'.'jpeg';
+        $bool = Storage::disk('uploads')->put($newImgName,$img);
+        if ($bool){
+
+            return $this->success(Status::PICTURE_SUCCESS);
+        }
+        return $this->success(Status::PICTURE_FAIL);
+
+    }
 }
