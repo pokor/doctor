@@ -57,11 +57,11 @@ class PictureController extends Controller
                    $data['info'] = $info;
                    return $this->success($data);
                }else{
-                   return $this->fail(Status::REQUEST_FAIL);
+                   return $this->fail(Status::VIDEO_FORMAT);
                }
 
         }else{
-            return $this->fail(Status::REQUEST_FAIL);
+            return $this->fail(Status::VIDEO_FORMAT);
         }
     }
     public function pictureList(Request $request){
