@@ -40,7 +40,7 @@ class PictureController extends Controller
                 return $this->fail(Status::PICTURE_FORMAT);
             }
 
-                $newImgName = date('Y-m-d-h-is').'-'.uniqid().'.'.$extension;//拼接新的文件名
+                $newImgName = date('Y-m-d-h-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
 
                 $realPath = $img->getRealPath();
                $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
@@ -110,9 +110,14 @@ class PictureController extends Controller
     }
     public function base64_decode(Request $request){
 
-        $base64 = $request->input('myPicture');
-        $img = $this->base64_decode($base64);
-        $newImgName = date('Y-m-d-h-is').'-'.uniqid().'.'.'jpeg';
+        //return $request->all();
+
+        //dd(date('Y-m-d-H-i-s'));
+        $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
+        $img = base64_decode($base64);
+        //return $img;
+        $newImgName = date('Y-m-d H-i-s').'-'.uniqid().'.'.'jpg';
+        /*return($newImgName);*/
         $bool = Storage::disk('uploads')->put($newImgName,$img);
         if ($bool){
 
