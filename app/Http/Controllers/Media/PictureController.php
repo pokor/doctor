@@ -110,18 +110,25 @@ class PictureController extends Controller
     }
     public function base64_decode(Request $request){
 
-        //return $request->all();
 
-        //dd(date('Y-m-d-H-i-s'));
         $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
         $img = base64_decode($base64);
         //return $img;
-        $newImgName = date('Y-m-d H-i-s').'-'.uniqid().'.'.'jpg';
+        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
         /*return($newImgName);*/
         $bool = Storage::disk('uploads')->put($newImgName,$img);
         if ($bool){
-
-            return $this->success(Status::PICTURE_SUCCESS);
+            $path = 'uploads/img/'.$newImgName;
+            $pic = new PictureModel();
+            $pic->pic_path = $path;//存储文件的路径
+            $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间戳
+            $pic->save();//存入数据库
+            $info = [];
+            $info['imgUrl'] = env('APP_URL').'/'.$path;
+            $data =[];
+            $data['info'] = $info;
+            $data['status'] = Status::PICTURE_SUCCESS;
+            return $this->success($data);
         }
         return $this->success(Status::PICTURE_FAIL);
 
