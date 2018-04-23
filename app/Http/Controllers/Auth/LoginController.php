@@ -67,14 +67,13 @@ class LoginController extends Controller
             $created_at = $user->created_at;
             $nickname = $user->nickname;
             $user_id = $user->id;
-
+            //dd($user_id);
             $user_avatar = DB::table('user_avatar')->where('user_id',$user_id)->first();
-            if (is_null($user_avatar)){
+            if (!is_null($user_avatar)){
 
             }
-            //dd($user_id);
-            $avatar_path =$user_avatar->avatar_path;
-            $uaer_avatar_img =$this->fullPath($avatar_path);
+            $avatar_path = isset($user_avatar->avatar_path)?$user_avatar->avatar_path:'';
+            $uaer_avatar_img = $this->fullPath($avatar_path);
             // 响应的数据
             $info = [];//声明用户信息
             $data = [];//

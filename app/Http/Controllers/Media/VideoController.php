@@ -10,10 +10,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Components\Request\Status;
 class VideoController extends Controller
 {
-    //
-    public function index(){
-        return view('media.video');
-    }
     public function uploadVideo(Request $request){
 
         if ($request->isMethod('post')){
@@ -25,7 +21,7 @@ class VideoController extends Controller
                 return $this->fail(Status::VIDEO_FORMAT);//上传失败返回状态码
             }
             if ($file){
-                $newImgName = date('Y-m-d-h-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
+                $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
                 $realPath = $file->getRealPath();//获取到路径
                 $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
                 $path = 'uploads/img/'.$newImgName;
@@ -37,7 +33,7 @@ class VideoController extends Controller
                   /* $video ->user_id = $user_id;*/
                    $video->save();
                    $info = [];
-                   $info['imgUrl'] = env('APP_URL').'/'.$path;
+                   $info['imgUrl'] = $this->fullPath($path);
                    $data = [
                        'error' =>0,
                        'info' => $info
@@ -51,13 +47,37 @@ class VideoController extends Controller
             return response($this->fail(Status::REQUEST_FAIL));
         }
     }
-   /* public function videoList(Request $request){
+    public function base64_picture(Request $request){
+        $base64 =  preg_replace("/\s/",'',$request->input('myVideo'));
+        $img = base64_decode($base64);
+        //return $img;
+        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'mp4';
+        /*return($newImgName);*/
+        $bool = Storage::disk('uploads')->put($newImgName,$img);
+        if ($bool){
+            $path = 'uploads/img/'.$newImgName;
+            $pic = new VideoModel();
+            $pic->video_path = $path;//存储文件的路径
+            $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间戳
+            $pic->save();//存入数据库
+            $info = [];
+            $info['videoUrl'] = $this->fullPath($path);
+            $data =[];
+            $data['info'] = $info;
+            $data['status'] = Status::PICTURE_SUCCESS;
+            return $this->success($data);
+        }
+        return $this->success(Status::PICTURE_FAIL);
+
+
+    }
+    public function videoList(Request $request){
         $user = $this->getUser();//获取到用户的token
 
         $user_id = $user->id;//解析用户token获取到用户的id
-        $userID = $request->input('id');
+        $user_id = $request->input('user_id');
 
-        $video = DB::table('user_video')->where('user_id',$userID)->orderby('id','asc')->get();//获取当前用户的所有视频
+        $video = DB::table('user_video')->where('user_id',$user_id)->orderby('id','asc')->get();//获取当前用户的所有视频
 
         $data = [];
 
@@ -70,5 +90,5 @@ class VideoController extends Controller
             $data[] =$videoData;
         }
         return $this->success($data);
-    }*/
+    }
 }

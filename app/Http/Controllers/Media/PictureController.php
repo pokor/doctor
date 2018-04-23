@@ -15,21 +15,15 @@ use App\Components\Request\Status;
 class PictureController extends Controller
 {
     //
-    public function index(){
-
-        return view('media.picture');
-        //dd(456655556585);
-    }
     public function uploadImg(Request $request){
         //$user = $this->getUser();
-        //dd($user);
-
         //$user_id = $user->id;
 
-        //return response();
-        //dd($request->all());
+        //dd($request);
+
         if ($request->isMethod('post')){
             $img = $request->file('myPicture');
+            $user_id = $request->input('user_id');
             //$file = $request->file('myPicture');
 
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
@@ -40,7 +34,7 @@ class PictureController extends Controller
                 return $this->fail(Status::PICTURE_FORMAT);
             }
 
-                $newImgName = date('Y-m-d-h-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
+                $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
 
                 $realPath = $img->getRealPath();
                $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
@@ -49,10 +43,11 @@ class PictureController extends Controller
                    $pic = new PictureModel();
                    //dd(time());
                    $pic->pic_path = $path;//存储文件的路径
-                   $pic->created_at = time();//保存图片的存入时间戳
+                   $pic->updated_at = time();//保存图片的存入时间戳
+                   $pic->user_id = $user_id;//保存图片的存入时间戳
                    $pic->save();//存入数据库
                    $info = [];
-                   $info['imgUrl'] = env('APP_URL').'/'.$path;
+                   $info['imgUrl'] = $this->fullPath($path);
                    $data =[];
                    $data['info'] = $info;
                    return $this->success($data);
@@ -70,7 +65,8 @@ class PictureController extends Controller
 
         $user_id = $user->id;//解析用户token获取到用户的id*/
 
-        $pic = DB::table('user_pic')->where('user_id',$request->input('id'))->orderby('id','asc')->get();
+
+        $pic = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id','asc')->get();
         //dd($pic);
         $data=[];
 
@@ -89,42 +85,50 @@ class PictureController extends Controller
     public function pictureDelete(Request $request){
           /*  $user = $this->getUser();
             $user_id = $user->id;*/
-        $pic_id = $request->input('id');
+        $pic_id = $request->input('pic_id');
 
+        $user_id = $request->input('user_id');
+
+
+
+        $picDelete = DB::table('user_pic')->where('user_id',$user_id)->get();
+        //dd($user);
         $res = json_decode($pic_id,true);
 
-        //var_dump($res);
+        if (!empty($picDelete)){
 
-        //dd('');
-
-
-        $date[] = '';
-        foreach ($res as $item){
+            $date[] = '';
+            //$request = DB::table('user_pic')->truncate();
             $pictureID = [];
-            $pictureID['id'] = $item;
-            echo($item);
-        };
-
-        $pic_deleted = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id',$pic_id)->delete();
+            foreach ($res as $item){
+                $pictureID[] = $item;
+            };
+            //dd($pictureID);
+            $request = DB::table('user_pic')->where('user_id',$user_id)->whereIn('id',$pictureID)->delete();
+            if (!is_null($request)){
+                return $this->success();
+            }
+        }
+        return $this->success(Status::REQUEST_FAIL);
 
     }
-    public function base64_decode(Request $request){
-
-
+    public function base64_picture(Request $request){
+        /*  $user = $this->getUser();
+           $user_id = $user->id;*/
         $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
         $img = base64_decode($base64);
         //return $img;
         $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
-        /*return($newImgName);*/
+
         $bool = Storage::disk('uploads')->put($newImgName,$img);
         if ($bool){
             $path = 'uploads/img/'.$newImgName;
             $pic = new PictureModel();
             $pic->pic_path = $path;//存储文件的路径
-            $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间戳
+            $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间
             $pic->save();//存入数据库
             $info = [];
-            $info['imgUrl'] = env('APP_URL').'/'.$path;
+            $info['imgUrl'] = $this->fullPath($path);
             $data =[];
             $data['info'] = $info;
             $data['status'] = Status::PICTURE_SUCCESS;
