@@ -21,12 +21,12 @@ Route::get('/',function (){
 Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
 
         Route::group(['prefix'=>'user'],function (){
-            Route::post('reset','Auth\ResetController@reset');//
-            Route::post('feed','UserCenter\FeedController@index');//
-            Route::any('avatar','UserCenter\AvatarController@index');//
-            Route::post('nickname','UserCenter\NickNameController@index');//
-            Route::post('gender','UserCenter\GenderController@index');//
-            Route::post('signature','UserCenter\SigneController@index');//
+            Route::post('reset','Auth\ResetController@reset');//重置密码
+            Route::post('feed','UserCenter\FeedController@index');//意见反馈
+            Route::any('avatar','UserCenter\AvatarController@index');//用户头像
+            Route::post('nickname','UserCenter\NickNameController@index');//用户昵称
+            Route::post('gender','UserCenter\GenderController@index');//用户性别
+            Route::post('signature','UserCenter\SigneController@index');//用户签名
         });
         Route::group(['prefix'=>'western'],function (){//
             Route::post('western','Home\HomeWesternController@index');
