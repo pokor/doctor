@@ -62,9 +62,10 @@ class HomeTraditionalController extends Controller
 
             //查医院和部门下面的分类
 
-            $categorys = DB::table('hos_dep_cat')->where("hospital_id",1)->where("department_id",$department->id)->get();
+            $categorys = DB::table('hos_dep_cat')->where("hospital_id",$a)->where("department_id",$department->id)->get();
 
 
+            //var_dump($categorys);
             foreach ($categorys as $k1 => $category){
                 $category =  DB::table('category')->where("id",$category->class_id)->first();
                 $department_categorys[$k]['category_items'][$k1]['category_id'] = isset($category->id)?$category->id:'';
