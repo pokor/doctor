@@ -115,24 +115,26 @@ class PictureController extends Controller
     public function base64_picture(Request $request){
         /*  $user = $this->getUser();
            $user_id = $user->id;*/
-        $user_id = 15;
-        $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
-        $img = base64_decode($base64);
+         $user_id = 15;
+         $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
+         $img = base64_decode($base64);
         //return $img;
-        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
-            Storage::disk('uploads')->put($newImgName,$img);
-            $path = 'uploads/img/'.$newImgName;
-            $pic = new PictureModel();
-            $pic->pic_path = $path;//存储文件的路径
-            $pic->user_id = $user_id;//保存图片的存入时间戳
-           /* $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间*/
-            $pic->save();//存入数据库
-            $info = [];
-            $info['imgUrl'] = $this->fullPath($path);
-            $data =[];
-            $data['info'] = $info;
-            $data['status'] = Status::PICTURE_SUCCESS;
-            return response($this->success($data));
+         $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
+         $fool = Storage::disk('uploads')->put($newImgName,$img);
+           if ($fool){
+               $path = 'uploads/img/'.$newImgName;
+               $pic = new PictureModel();
+               $pic->pic_path = $path;//存储文件的路径
+               $pic->user_id = $user_id;//保存图片的存入时间戳
+               /* $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间*/
+               $pic->save();//存入数据库
+               $info = [];
+               $info['imgUrl'] = $this->fullPath($path);
+               $data =[];
+               $data['info'] = $info;
+               $data['status'] = Status::PICTURE_SUCCESS;
+               return response($this->success($data));
+           }
 
 
     }

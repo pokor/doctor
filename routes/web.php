@@ -32,7 +32,7 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
             Route::post('western','Home\HomeWesternController@index');
         });
         Route::group(['prefix'=>'traditional'],function (){//
-            Route::get('traditional','Home\HomeTraditionalController@index');
+            Route::post('traditional','Home\HomeTraditionalController@index');
         });
         Route::group(['prefix'=>'diet'],function (){//
             Route::post('meal','Home\HomeDietController@index');
