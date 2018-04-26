@@ -89,8 +89,6 @@ class PictureController extends Controller
 
         $user_id = $request->input('user_id');
 
-
-
         $picDelete = DB::table('user_pic')->where('user_id',$user_id)->get();
         //dd($user);
         $res = json_decode($pic_id,true);

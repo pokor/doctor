@@ -17,7 +17,6 @@ Route::get('/',function (){
     return view('welcome');
 });
 
-
 Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
 
         Route::group(['prefix'=>'user'],function (){
@@ -28,21 +27,21 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
             Route::post('gender','UserCenter\GenderController@index');//用户性别
             Route::post('signature','UserCenter\SigneController@index');//用户签名
         });
-        Route::group(['prefix'=>'hospital'],function (){//
+        Route::group(['prefix'=>'hospital'],function (){//用户看病项目的路由
             Route::post('hospital','Home\HomeTraditionalController@index');
         });
-        Route::group(['prefix'=>'diet'],function (){//
-            Route::post('meal','Home\HomeDietController@index');
-            Route::post('list','Home\HomeDietController@mealImgList');
+        Route::group(['prefix'=>'diet'],function (){//用户饮食记录
+            Route::post('meal','Home\HomeDietController@index');//用户上传饮食记录的图片
+            Route::post('list','Home\HomeDietController@mealImgList');//用户上传饮食记录的列表
             Route::post('choice','Home\HomeDietController@choiceList');
             //Route::post('delete','Home\HomeDietController@mealImgDelete');
         });
-        Route::group(['prefix'=>'beauty'],function (){//
-            Route::post('upload','Home\HomeBeautyController@beautyPicUpload');
-            Route::post('list','Home\HomeBeautyController@beautyImgList');
+        Route::group(['prefix'=>'beauty'],function (){//用户美容日记
+            Route::post('upload','Home\HomeBeautyController@beautyPicUpload');//上传美容日记的上传
+            Route::post('list','Home\HomeBeautyController@beautyImgList');//用户美容日记的记录
         });
         Route::group(['prefix'=>'picture'],function (){//用户上传医疗照片路由
-            Route::post('upload','Media\PictureController@uploadImg');
+            Route::post('upload','Media\PictureController@uploadImg');//用于文件上传的形式上传
             Route::any('picture2','Media\PictureController@base64_picture');//用于上传base64图片的功能
             Route::post('list','Media\PictureController@pictureList');
             Route::get('delete','Media\PictureController@pictureDelete');

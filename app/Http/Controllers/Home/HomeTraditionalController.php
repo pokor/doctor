@@ -13,7 +13,7 @@ class HomeTraditionalController extends Controller
         $hospital_id = $request->input('hospital_id');
         $data = [];
 
-        $data[0] = [
+        /*$data[0] = [
             'department_id' => '1',
             'department_name' => '内科',
             'category_items' => [
@@ -43,7 +43,7 @@ class HomeTraditionalController extends Controller
                 ],
 
             ]
-        ];
+        ];*/
 
 
         // 包装数据
@@ -68,11 +68,10 @@ class HomeTraditionalController extends Controller
             foreach ($categorys as $k1 => $category){
                 $category =  DB::table('category')->where("id",$category->class_id)->first();
                 $department_categorys[$k]['category_items'][$k1]['category_id'] = isset($category->id)?$category->id:'';
-                $department_categorys[$k]['category_items'][$k1]['category_name'] = isset($category->class_name)?$category->class_name:'';
+                $department_categorys[$k]['category_items'][$k1]['category_name'] = isset($category->class_name)?$category->class_name:'全科';
             }
         }
         //dd($department_categorys);
-
         return $this->success($department_categorys);
     }
 }
