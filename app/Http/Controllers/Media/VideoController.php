@@ -74,7 +74,7 @@ class VideoController extends Controller
     public function videoList(Request $request){
         $user = $this->getUser();//获取到用户的token
 
-        $user_id = $user->id;//解析用户token获取到用户的id
+        //$user_id = $user->id;//解析用户token获取到用户的id
         $user_id = $request->input('user_id');
 
         $video = DB::table('user_video')->where('user_id',$user_id)->orderby('id','asc')->get();//获取当前用户的所有视频
@@ -90,5 +90,35 @@ class VideoController extends Controller
             $data[] =$videoData;
         }
         return $this->success($data);
+    }
+    public function pictureDelete(Request $request){
+        /*  $user = $this->getUser();
+          $user_id = $user->id;*/
+        $video_id = $request->input('video_id');
+
+        $user_id = $request->input('user_id');
+
+
+
+        $videoDelete = DB::table('user_video')->where('user_id',$user_id)->get();
+        //dd($user);
+        $res = json_decode($video_id,true);
+
+        if (!empty($videoDelete)){
+
+            $date[] = '';
+            //$request = DB::table('user_pic')->truncate();
+            $videoID = [];
+            foreach ($res as $item){
+                $videoID[] = $item;
+            };
+            //dd($pictureID);
+            $request = DB::table('video_id')->where('user_id',$user_id)->whereIn('id',$videoID)->delete();
+            if (!is_null($request)){
+                return $this->success();
+            }
+        }
+        return $this->success(Status::REQUEST_FAIL);
+
     }
 }

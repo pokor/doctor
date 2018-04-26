@@ -28,11 +28,8 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
             Route::post('gender','UserCenter\GenderController@index');//用户性别
             Route::post('signature','UserCenter\SigneController@index');//用户签名
         });
-        Route::group(['prefix'=>'western'],function (){//
-            Route::post('western','Home\HomeWesternController@index');
-        });
-        Route::group(['prefix'=>'traditional'],function (){//
-            Route::post('traditional','Home\HomeTraditionalController@index');
+        Route::group(['prefix'=>'hospital'],function (){//
+            Route::post('hospital','Home\HomeTraditionalController@index');
         });
         Route::group(['prefix'=>'diet'],function (){//
             Route::post('meal','Home\HomeDietController@index');
@@ -42,6 +39,7 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
         });
         Route::group(['prefix'=>'beauty'],function (){//
             Route::post('upload','Home\HomeBeautyController@beautyPicUpload');
+            Route::post('list','Home\HomeBeautyController@beautyImgList');
         });
         Route::group(['prefix'=>'picture'],function (){//用户上传医疗照片路由
             Route::post('upload','Media\PictureController@uploadImg');

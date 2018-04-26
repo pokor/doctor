@@ -10,7 +10,7 @@ class HomeTraditionalController extends Controller
 {
     //
     public function index(Request $request){
-        $a = $request->input('hospital_id');
+        $hospital_id = $request->input('hospital_id');
         $data = [];
 
         $data[0] = [
@@ -46,12 +46,11 @@ class HomeTraditionalController extends Controller
         ];
 
 
-
         // 包装数据
 
         $department_categorys = [];
 
-        $departments = DB::table('hos_dep_cat')->where("hospital_id",$a)->groupBy('department_id')->get();
+        $departments = DB::table('hos_dep_cat')->where("hospital_id",$hospital_id)->groupBy('department_id')->get();
         //print $departments;die();
 
         //查医院下的部门
@@ -62,7 +61,7 @@ class HomeTraditionalController extends Controller
 
             //查医院和部门下面的分类
 
-            $categorys = DB::table('hos_dep_cat')->where("hospital_id",$a)->where("department_id",$department->id)->get();
+            $categorys = DB::table('hos_dep_cat')->where("hospital_id",$hospital_id)->where("department_id",$department->id)->get();
 
 
             //var_dump($categorys);

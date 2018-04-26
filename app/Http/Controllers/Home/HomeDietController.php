@@ -16,7 +16,7 @@ class HomeDietController extends Controller
            $user_id = $user->id;*/
         $mealStyle = $request->input('mealStyle');
         $user_id = $request->input('user_id');
-        $myDietPicture  = $request->input('myDietPicture');
+        $myDietPicture  = $request->input('myMealPicture');
         $base64 =  preg_replace("/\s/",'',$myDietPicture);
         $img = base64_decode($base64);
         $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
