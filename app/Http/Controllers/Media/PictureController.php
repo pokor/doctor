@@ -18,13 +18,16 @@ class PictureController extends Controller
     public function uploadImg(Request $request){
         //$user = $this->getUser();
         //$user_id = $user->id;
-
-        //dd($request);
+       //return $request->all();
+       // dd();
 
         if ($request->isMethod('post')){
             $img = $request->file('myPicture');
             $user_id = $request->input('user_id');
+            $appraise = $request->input('appraise');
+            $hospital = $request->input('hospital');
             //$file = $request->file('myPicture');
+
 
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
 
@@ -45,6 +48,8 @@ class PictureController extends Controller
                    $pic->pic_path = $path;//存储文件的路径
                    $pic->updated_at = time();//保存图片的存入时间戳
                    $pic->user_id = $user_id;//保存图片的存入时间戳
+                   $pic->appraise = $appraise;//保存评价时间戳
+                   $pic->hospital = $hospital;//保存评价的医院的存入时间戳
                    $pic->save();//存入数据库
                    $info = [];
                    $info['imgUrl'] = $this->fullPath($path);
@@ -64,8 +69,7 @@ class PictureController extends Controller
        /* $user = $this->getUser();//获取到用户的token
 
         $user_id = $user->id;//解析用户token获取到用户的id*/
-
-
+       
         $pic = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id','asc')->get();
         //dd($pic);
         $data=[];
@@ -76,6 +80,8 @@ class PictureController extends Controller
                 $pictureData['url'] = $this->fullPath($items->pic_path);
                 $pictureData['user_id'] =$items->user_id;
                 $pictureData['created_at'] =$items->created_at;
+                $pictureData['appraise'] =$items->appraise;
+                $pictureData['hospital'] =$items->hospital;
                 $data[]=$pictureData;
         }
         return $this->success($data);
@@ -108,23 +114,29 @@ class PictureController extends Controller
             }
         }
         return $this->success(Status::REQUEST_FAIL);
-
     }
     public function base64_picture(Request $request){
         /*  $user = $this->getUser();
            $user_id = $user->id;*/
-         $user_id = 15;
-         $base64 =  preg_replace("/\s/",'',$request->input('myPicture'));
-         $img = base64_decode($base64);
-        //return $img;
-         $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
-         $fool = Storage::disk('uploads')->put($newImgName,$img);
+             $user_id = 15;
+             $myPicture = $request->input('myPicture');
+             $appraise = $request->input('appraise');
+             $hospital = $request->input('hospital');
+
+             //return $myPicture;
+             $base64 =  preg_replace("/\s/",'',$myPicture);
+
+             $img = base64_decode($base64);
+             //var_dump($myPicture,$appraise,$hospital);
+             $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpeg';
+             $fool = Storage::disk('uploads')->put($newImgName,$img);
            if ($fool){
                $path = 'uploads/img/'.$newImgName;
                $pic = new PictureModel();
                $pic->pic_path = $path;//存储文件的路径
                $pic->user_id = $user_id;//保存图片的存入时间戳
-               /* $pic->created_at = date('Y-m-d-H-i-s');//保存图片的存入时间*/
+               $pic->appraise = $appraise;//保存评价时间戳
+               $pic->hospital = $hospital;//保存评价的医院的存入时间戳
                $pic->save();//存入数据库
                $info = [];
                $info['imgUrl'] = $this->fullPath($path);
@@ -133,7 +145,5 @@ class PictureController extends Controller
                $data['status'] = Status::PICTURE_SUCCESS;
                return response($this->success($data));
            }
-
-
     }
 }

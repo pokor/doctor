@@ -15,6 +15,7 @@ class VideoController extends Controller
         if ($request->isMethod('post')){
            /* $user_id = $this->getUser()->id;*/
             $file = $request->file('myVideo');
+            //dd($file);
             $allowed_extensions = ["mp4", "avi", "rmvb","mkv","mov","flv","3gp","m4v","mpeg"];
             $extension = $file->getClientOriginalExtension();//获取上传图片的后缀名
             if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确

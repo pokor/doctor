@@ -49,8 +49,8 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
         Route::group(['prefix'=>'video'],function (){//用户上传医疗视频路由
             Route::post('upload','Media\VideoController@uploadVideo');
             Route::any('video2','Media\VideoController@base64_video');//用于上传base64视频的功能
-            Route::post('list','Media\VideoController@videoList');
-            Route::post('delete','Media\VideoController@videoDelete');
+            Route::post('list','Media\VideoController@videoList');//视频列表
+            Route::post('delete','Media\VideoController@videoDelete');//图片删除
         });
 
 });
