@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Qcloud\Sms\SmsSingleSender;
 
 class RegisterController extends Controller
 {
@@ -72,6 +73,30 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
+    }
+    public function sendMsg(Request $request){
+        $mobile = 18652497020;
+        // 短信应用SDK AppID
+        // 短信应用SDK AppKey
+        $appkey = config('sms.msgKey');
+        //dd($appkey);
+
+
+        $appid = config('sms.appID');// 1400开头
+        //dd($appid);
+
+        // 需要发送短信的手机号码
+        //$phoneNumbers = [$mobile];
+
+        // 短信模板ID，需要在短信应用中申请
+        $templateId = config('sms.msgTemplate.content_id'); // NOTE: 这里的模板ID`7839`只是一个示例，真实的模板ID需要在短信控制台中申请
+        //dd($templateId);
+        $smsSign = "握富信息咨询有限公司"; // NOTE: 这里的签名只是示例，请使用真实的已申请的签名，签名参数使用的是`签名内容`，而不是`签名ID`
+        $ssender = new SmsSingleSender($appid,$appkey);
+        $parms = ['123456'];
+        $result = $ssender->sendWithParam("86",$mobile,$templateId,$parms,$smsSign);
+        $rsp = json_decode($result);
+        print_r($rsp);
     }
 
     /**

@@ -16,11 +16,17 @@ class HomeDietController extends Controller
            $user_id = $user->id;*/
         $mealStyle = $request->input('mealStyle');
         $user_id = $request->input('user_id');
-        $myDietPicture  = $request->input('myMealPicture');
-        $base64 =  preg_replace("/\s/",'',$myDietPicture);
-        $img = base64_decode($base64);
-        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
-        $bool = Storage::disk('uploads')->put($newImgName,$img);
+        $myDietPicture  = $request->file('myMealPicture');
+        $allowed_extensions = ["png", "jpg", "gif","jpeg"];
+        $extension = $myDietPicture->getClientOriginalExtension();//获取上传图片的后缀名
+        //return '111555555555';
+        if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
+            return $this->fail(Status::PICTURE_FORMAT);
+        }
+        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpeg';
+        $realPath = $myDietPicture->getRealPath();
+        $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
+
         if ($bool){
             $date = date('Y-m-d-H-i-s');//保存图片的存入时间戳;
             $path = 'uploads/img/'.$newImgName;

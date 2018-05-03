@@ -17,9 +17,10 @@ Route::get('/',function (){
     return view('welcome');
 });
 
+Route::get('msg','Auth\RegisterController@sendMsg');
 Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
 
-        Route::group(['prefix'=>'user'],function (){
+    Route::group(['prefix'=>'user'],function (){
             Route::post('reset','Auth\ResetController@reset');//重置密码
             Route::post('feed','UserCenter\FeedController@index');//意见反馈
             Route::any('avatar','UserCenter\AvatarController@index');//用户头像

@@ -26,8 +26,8 @@ class PictureController extends Controller
             $user_id = $request->input('user_id');
             $appraise = $request->input('appraise');
             $hospital = $request->input('hospital');
+            $project = $request->input('project');
             //$file = $request->file('myPicture');
-
 
             $allowed_extensions = ["png", "jpg", "gif","jpeg"];
 
@@ -50,6 +50,7 @@ class PictureController extends Controller
                    $pic->user_id = $user_id;//保存图片的存入时间戳
                    $pic->appraise = $appraise;//保存评价时间戳
                    $pic->hospital = $hospital;//保存评价的医院的存入时间戳
+                   $pic->project = $project;
                    $pic->save();//存入数据库
                    $info = [];
                    $info['imgUrl'] = $this->fullPath($path);
@@ -69,19 +70,20 @@ class PictureController extends Controller
        /* $user = $this->getUser();//获取到用户的token
 
         $user_id = $user->id;//解析用户token获取到用户的id*/
-       
+
         $pic = DB::table('user_pic')->where('user_id',$request->input('user_id'))->orderby('id','asc')->get();
         //dd($pic);
         $data=[];
 
         foreach ($pic as $items){
                 $pictureData =[];
-                $pictureData['id'] = $items->id;
+                $pictureData['picture_id'] = $items->id;
                 $pictureData['url'] = $this->fullPath($items->pic_path);
                 $pictureData['user_id'] =$items->user_id;
                 $pictureData['created_at'] =$items->created_at;
-                $pictureData['appraise'] =$items->appraise;
-                $pictureData['hospital'] =$items->hospital;
+                $pictureData['appraise'] =isset($items->appraise)?$items->appraise:'';
+                $pictureData['hospital'] =isset($items->hospital)?$items->hospital:'';
+                $pictureData['content'] =isset($items->content)?$items->content:'';
                 $data[]=$pictureData;
         }
         return $this->success($data);

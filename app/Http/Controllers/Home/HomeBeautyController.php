@@ -17,12 +17,17 @@ class HomeBeautyController extends Controller
         $user_id = $user->id;//解析用户token获取到用户的id*/
 
         $user_id = $request->input('user_id');
-        $base64 =  preg_replace("/\s/",'',$request->input('myBeautyImg'));
+        $img =  $request->file('myBeautyImg');
         $variety = $request->input('variety');
-        $img = base64_decode($base64);
-        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpg';
+        $allowed_extensions = ["png", "jpg", "gif","jpeg"];
+        $extension = $img->getClientOriginalExtension();//获取上传图片的后缀名
+        if (!in_array(strtolower($extension),$allowed_extensions)){//判断图片上传格式是否正确
+            return $this->fail(Status::PICTURE_FORMAT);
+        }
+        $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'jpeg';
+        $realPath = $img->getRealPath();
 
-        $bool = Storage::disk('uploads')->put($newImgName,$img);
+        $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
         if ($bool){
             $path = 'uploads/img/'.$newImgName;
             $beautyImg = new BeautyModel();
