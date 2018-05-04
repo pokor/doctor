@@ -20,7 +20,7 @@ Route::get('/',function (){
 Route::get('msg','Auth\RegisterController@sendMsg');
 Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
 
-    Route::group(['prefix'=>'user'],function (){
+        Route::group(['prefix'=>'user'],function (){
             Route::post('reset','Auth\ResetController@reset');//重置密码
             Route::post('feed','UserCenter\FeedController@index');//意见反馈
             Route::any('avatar','UserCenter\AvatarController@index');//用户头像
@@ -30,6 +30,11 @@ Route::group(['middleware' => 'web','prefix' => 'v1'],function (){
         });
         Route::group(['prefix'=>'hospital'],function (){//用户看病项目的路由
             Route::post('hospital','Home\HomeTraditionalController@index');
+        });
+        Route::group(['prefix'=>'remind'],function (){
+            Route::post('remind','Home\HomeRemindController@index');
+            Route::post('list','Home\HomeRemindController@list');
+            Route::post('delete','Home\HomeRemindController@delete');
         });
         Route::group(['prefix'=>'diet'],function (){//用户饮食记录
             Route::post('meal','Home\HomeDietController@index');//用户上传饮食记录的图片

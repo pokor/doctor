@@ -14,6 +14,7 @@ class Status
 {
     const REQUEST_SUCCESS = 0;//请求成功
     const REQUEST_FAIL = -1;//请求失败
+    const CODE_ERROR = -2;//请求失败
 
     // 登录相关
     const LOGIN_FAIL = 10000; //登录失败

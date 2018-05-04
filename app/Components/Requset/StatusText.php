@@ -33,6 +33,7 @@ class StatusText
         return [
             Status::REQUEST_SUCCESS => '请求成功',
             Status::REQUEST_FAIL => '请求失败',
+            Status::CODE_ERROR => '验证码不正确',
 
             // 登录相关
             Status::LOGIN_FAIL => '登录失败',

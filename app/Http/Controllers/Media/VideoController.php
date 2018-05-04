@@ -28,15 +28,14 @@ class VideoController extends Controller
                 $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.$extension;//拼接新的文件名
                 $realPath = $file->getRealPath();//获取到路径
                 $bool = Storage::disk('uploads')->put($newImgName,file_get_contents($realPath));
-                $path = 'uploads/img/'.$newImgName;
-               if ($bool){
+                if ($bool){
+                   $path = 'uploads/img/'.$newImgName;
                    $video = new VideoModel();
                    $video->video_path = $path;//存储文件的路径
-                  /* $video->video_suffix = $extension;//保存图片的后缀*/
                    $video->created_at = time();//保存视频的存入时间戳
                    $video->appraise = $appraise;//保存评价时间戳
                    $video->hospital = $hospital;//保存评价的医院的存入时间戳
-                  /* $video ->user_id = $user_id;*/
+                   $video ->user_id = $user_id;
                    $video->save();
                    $info = [];
                    $info['imgUrl'] = $this->fullPath($path);
@@ -58,7 +57,7 @@ class VideoController extends Controller
         $img = base64_decode($base64);
         //return $img;
         $newImgName = date('Y-m-d-H-i-s').'-'.uniqid().'.'.'mp4';
-        /*return($newImgName);*/
+        /*return($newImgName);*/;
         $bool = Storage::disk('uploads')->put($newImgName,$img);
         if ($bool){
             $path = 'uploads/img/'.$newImgName;
